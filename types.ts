@@ -38,11 +38,14 @@ export enum NotificationPriority {
 }
 
 export interface NotificationData {
+  id: string;
   priority: NotificationPriority;
+  lifecycle: 'new' | 'acknowledged' | 'escalated' | 'resolved';
   title: string;
   time: string;
   description: string;
   location: string;
+  actionLabel?: string;
 }
 
 export interface HRUtilizationData {
