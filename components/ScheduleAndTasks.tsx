@@ -1,25 +1,8 @@
 import React, { useState, DragEvent } from 'react';
 import { Task, ScheduleEvent } from '../types';
+import { useOpsData } from '../App';
 import { CheckSquareIcon, CalendarIcon, PlusIcon } from './Icons';
 import Modal from './Modal';
-
-interface TaskColumn {
-    status: string;
-    tasks: Task[];
-}
-
-const initialTasks: TaskColumn[] = [
-    { status: 'Tugas Baru', tasks: [
-        { id: 'T1', title: 'Siapkan laporan stok bulanan', description: 'Kompilasi data dari semua RS', assignee: 'Staf Logistik', dueDate: '2025-05-30' },
-        { id: 'T2', title: 'Jadwalkan pemeliharaan X-Ray', description: 'Hubungi vendor teknis', assignee: 'Tim Alkes', dueDate: '2025-06-02' },
-    ]},
-    { status: 'Sedang Dikerjakan', tasks: [
-        { id: 'T3', title: 'Verifikasi data pasien', description: 'Cross-check data baru dari RSPAU', assignee: 'Admin Medis', dueDate: '2025-05-28' },
-    ]},
-    { status: 'Selesai', tasks: [
-        { id: 'T4', title: 'Pesan ulang reagen lab', description: 'Pesanan untuk kebutuhan bulan Juni', assignee: 'Lab Pusat', dueDate: '2025-05-25' },
-    ]},
-];
 
 const initialEvents: ScheduleEvent[] = [
     { id: 'E1', title: 'Rapat Staf Mingguan', time: '08:00', day: 'Sen', type: 'meeting' },
@@ -50,7 +33,7 @@ const getTaskStatusColor = (status: string) => {
 
 const ScheduleAndTasks: React.FC = () => {
     const [events, setEvents] = useState<ScheduleEvent[]>(initialEvents);
-    const [taskColumns, setTaskColumns] = useState<TaskColumn[]>(initialTasks);
+    const { taskColumns, setTaskColumns } = useOpsData();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDay, setSelectedDay] = useState<DayOfWeek | null>(null);
     const [newEvent, setNewEvent] = useState({ title: '', time: '09:00', type: 'meeting' as ScheduleEvent['type'] });
@@ -175,6 +158,9 @@ const ScheduleAndTasks: React.FC = () => {
                                             <span>PIC: {task.assignee}</span>
                                             <span>Due: {task.dueDate}</span>
                                         </div>
+                                        {task.linkedIncidentId && (
+                                            <p className="text-xs font-semibold text-red-600 dark:text-red-300 mt-2">Linked Incident: {task.linkedIncidentId}</p>
+                                        )}
                                     </div>
                                 ))}
                             </div>

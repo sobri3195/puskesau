@@ -37,9 +37,17 @@ export enum NotificationPriority {
   Rendah = 'Rendah',
 }
 
+export enum AlertSeverity {
+  Rendah = 'rendah',
+  Sedang = 'sedang',
+  Tinggi = 'tinggi',
+  Kritis = 'kritis',
+}
+
 export interface NotificationData {
   id: string;
   priority: NotificationPriority;
+  severity: AlertSeverity;
   lifecycle: 'new' | 'acknowledged' | 'escalated' | 'resolved';
   title: string;
   time: string;
@@ -170,6 +178,25 @@ export interface Task {
     description: string;
     assignee: string;
     dueDate: string;
+    linkedIncidentId?: string;
+}
+
+export interface TaskColumn {
+    status: string;
+    tasks: Task[];
+}
+
+export type IncidentStatus = 'open' | 'triage' | 'in-progress' | 'resolved' | 'closed';
+
+export interface Incident {
+    id: string;
+    title: string;
+    sourceNotificationId: string;
+    severity: AlertSeverity;
+    status: IncidentStatus;
+    team: string;
+    createdAt: string;
+    slaMinutes: number;
 }
 
 export interface ScheduleEvent {
