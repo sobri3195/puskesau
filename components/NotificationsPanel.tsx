@@ -2,6 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { NotificationData, NotificationPriority } from '../types';
 import { ExclamationIcon, RightArrowIcon } from './Icons';
 import { useNavigation, View } from '../App';
+import {
+  filterNotifications,
+  getTargetViewFromNotification,
+  transitionNotificationLifecycle,
+} from '../utils/notificationLogic';
 
 interface PriorityBadgeProps {
   priority: NotificationPriority;
@@ -53,10 +58,7 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ data, onNotific
   }, [data]);
 
   const filteredNotifications = useMemo(() => {
-    if (!criticalOnlyMode) return data;
-    return data.filter(
-      (notification) => notification.priority === NotificationPriority.Tinggi && notification.lifecycle !== 'resolved',
-    );
+    return filterNotifications(data, criticalOnlyMode);
   }, [criticalOnlyMode, data]);
 
   useEffect(() => {
@@ -65,27 +67,14 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ data, onNotific
     }
   }, [filteredNotifications, selectedNotificationId]);
 
-  const getTargetViewFromNotification = (notification: NotificationData): View | null => {
-    const title = notification.title.toLowerCase();
-
-    if (title.includes('darah') || title.includes('icu') || title.includes('kritis')) return 'Pelayanan Medis';
-    if (title.includes('stok')) return 'Logistik & Stok';
-    if (title.includes('pengiriman')) return 'Distribusi';
-    if (title.includes('jadwal')) return 'Jadwal & Tugas';
-
-    return null;
-  };
-
   const updateLifecycle = (notificationId: string, lifecycle: NotificationData['lifecycle']) => {
     onNotificationsChange((previous) =>
-      previous.map((notification) =>
-        notification.id === notificationId ? { ...notification, lifecycle } : notification,
-      ),
+      transitionNotificationLifecycle(previous, notificationId, lifecycle),
     );
   };
 
   const handleOneClickAction = (notification: NotificationData) => {
-    const targetView = getTargetViewFromNotification(notification);
+    const targetView = getTargetViewFromNotification(notification.title) as View | null;
     updateLifecycle(notification.id, 'acknowledged');
     if (targetView) {
       setActiveView(targetView);
@@ -182,7 +171,7 @@ const NotificationsPanel: React.FC<NotificationsPanelProps> = ({ data, onNotific
                 </button>
                 <button
                   onClick={() => {
-                    const targetView = getTargetViewFromNotification(notification);
+                    const targetView = getTargetViewFromNotification(notification.title) as View | null;
                     if (targetView) setActiveView(targetView);
                   }}
                   className="flex items-center space-x-1 font-semibold text-blue-600 hover:underline dark:text-blue-400"
