@@ -19,6 +19,12 @@ import {
 } from '../types';
 import { UsersIcon, BoxIcon, PulseIcon, TruckIcon } from './Icons';
 
+const createNotification = (payload: Omit<NotificationData, 'id' | 'lifecycle'>): NotificationData => ({
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    lifecycle: 'new',
+    ...payload,
+});
+
 const initialStatCards: StatCardData[] = [
   { title: 'Total Pasien Aktif', value: '402', change: '+12%', changeType: 'increase', icon: <UsersIcon /> },
   { title: 'Stok Obat dan Alkes', value: '75%', change: '5%', changeType: 'decrease', icon: <BoxIcon /> },
@@ -35,10 +41,10 @@ const initialHospitalData: HospitalStatusData[] = [
 ];
 
 const initialNotificationData: NotificationData[] = [
-    { priority: NotificationPriority.Tinggi, title: 'Kebutuhan Darah Segera', time: '15 menit yang lalu', description: 'Kebutuhan darah golongan O- untuk kasus operasi darurat', location: 'RSPAU Hardjolukito' },
-    { priority: NotificationPriority.Sedang, title: 'Ruang ICU Hampir Penuh', time: '45 menit yang lalu', description: 'Kapasitas ruang ICU tersisa 2 dari 10 tempat tidur', location: 'RS Lanud Halim' },
-    { priority: NotificationPriority.Rendah, title: 'Pengiriman Alkes Tiba', time: '1 jam yang lalu', description: 'Pengiriman alat kesehatan dari Depot Pusat telah tiba', location: 'RS Lanud Adisutjipto' },
-    { priority: NotificationPriority.Sedang, title: 'Jadwal Pemeliharaan Alat', time: '3 jam yang lalu', description: 'Pengingat: Jadwal pemeliharaan X-Ray portable hari ini', location: 'RS Lanud Halim' },
+    createNotification({ priority: NotificationPriority.Tinggi, title: 'Kebutuhan Darah Segera', time: '15 menit yang lalu', description: 'Kebutuhan darah golongan O- untuk kasus operasi darurat', location: 'RSPAU Hardjolukito', actionLabel: 'Aktifkan kode donor' }),
+    createNotification({ priority: NotificationPriority.Sedang, title: 'Ruang ICU Hampir Penuh', time: '45 menit yang lalu', description: 'Kapasitas ruang ICU tersisa 2 dari 10 tempat tidur', location: 'RS Lanud Halim', actionLabel: 'Alihkan pasien prioritas' }),
+    createNotification({ priority: NotificationPriority.Rendah, title: 'Pengiriman Alkes Tiba', time: '1 jam yang lalu', description: 'Pengiriman alat kesehatan dari Depot Pusat telah tiba', location: 'RS Lanud Adisutjipto', actionLabel: 'Konfirmasi penerimaan' }),
+    createNotification({ priority: NotificationPriority.Sedang, title: 'Jadwal Pemeliharaan Alat', time: '3 jam yang lalu', description: 'Pengingat: Jadwal pemeliharaan X-Ray portable hari ini', location: 'RS Lanud Halim', actionLabel: 'Jadwalkan teknisi' }),
 ];
 
 const initialHrData: HRUtilizationData = {
@@ -144,13 +150,14 @@ const Dashboard: React.FC = () => {
             newData.forEach((hospital, index) => {
                 const oldHospital = prevData[index];
                 if (hospital.igdStatus === IGDStatus.Kritis && oldHospital.igdStatus !== IGDStatus.Kritis) {
-                    setPendingNotification({
+                    setPendingNotification(createNotification({
                         priority: NotificationPriority.Tinggi,
                         title: `Status Kritis: ${hospital.name}`,
                         time: 'Baru saja',
                         description: 'Kapasitas IGD & tempat tidur sangat terbatas.',
                         location: hospital.name,
-                    });
+                        actionLabel: 'Aktifkan protokol IGD',
+                    }));
                 }
             });
             return newData;
@@ -199,13 +206,14 @@ const Dashboard: React.FC = () => {
             newData.forEach((item, index) => {
                 const oldItem = prevData[index];
                 if (item.status === StockStatus.Kritis && oldItem.status !== StockStatus.Kritis) {
-                    setPendingNotification({
+                    setPendingNotification(createNotification({
                         priority: NotificationPriority.Sedang,
                         title: `Stok Kritis: ${item.name}`,
                         time: 'Baru saja',
                         description: `Stok tersisa ${item.stock}. Segera pesan ulang.`,
                         location: 'Gudang Pusat',
-                    });
+                        actionLabel: 'Buat permintaan pengadaan',
+                    }));
                 }
             });
             return newData;
@@ -258,7 +266,7 @@ const Dashboard: React.FC = () => {
           <LowStockItemsTable data={lowStockData} />
         </div>
         <div className="lg:w-1/3 w-full flex-shrink-0">
-          <NotificationsPanel data={notificationData} />
+          <NotificationsPanel data={notificationData} onNotificationsChange={setNotificationData} />
         </div>
       </div>
     </div>
