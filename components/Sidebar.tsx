@@ -18,6 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, activeView, setAct
     { name: 'Riwayat Pasien', icon: <FileTextIcon /> },
     { name: 'Distribusi', icon: <TruckIcon /> },
     { name: 'Jadwal & Tugas', icon: <CalendarIcon /> },
+    { name: 'Incident Management', icon: <HelpIcon /> },
     { name: 'Laporan & Analitik', icon: <ChartIcon /> },
   ];
 
