@@ -1,0 +1,5 @@
+{
+  "name": "MedTrack AU Dashboard",
+  "description": "An integrated command dashboard for monitoring the status and performance of the TNI AU medical system, providing real-time data on active patients, medical supplies, hospital capacity, and logistics distribution.",
+  "requestFramePermissions": []
+}
