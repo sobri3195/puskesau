@@ -4,6 +4,7 @@ import { FileTextIcon, DownloadIcon, ChartIcon } from './Icons';
 import { useTheme } from '../App';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line } from 'recharts';
 import Modal from './Modal';
+import OperationalForecast from './OperationalForecast';
 
 
 // Mock Data
@@ -205,6 +206,8 @@ const ReportsAndAnalytics: React.FC = () => {
         <div className="space-y-6">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Laporan & Analitik</h1>
             
+            <OperationalForecast />
+
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm dark:bg-gray-800">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center"><FileTextIcon className="mr-2"/> Generator Laporan</h2>
