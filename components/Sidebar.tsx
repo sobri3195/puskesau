@@ -37,9 +37,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, activeView, setAct
         <div className={`fixed lg:relative z-40 w-64 bg-[#0a2540] text-white flex flex-col flex-shrink-0 h-full transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
             <div className="h-20 flex items-center justify-between px-6 border-b border-blue-900/50 flex-shrink-0">
                 <div className="flex items-center">
-                    <div className="w-10 h-10 bg-white rounded-md mr-3 flex items-center justify-center">
-                         <div className="w-4 h-4 bg-blue-600 rounded-full"></div>
-                    </div>
+                    <img
+                        src="/logo.svg"
+                        alt="Logo MedTrack AU"
+                        className="w-10 h-10 rounded-md mr-3 bg-white/10 p-1 object-contain"
+                    />
                     <div>
                         <h1 className="text-lg font-bold">MedTrack AU</h1>
                         <p className="text-xs text-blue-200">Dashboard Komando</p>

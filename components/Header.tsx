@@ -15,9 +15,16 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         <button onClick={onMenuClick} className="lg:hidden text-gray-500 hover:text-gray-800 mr-4 dark:text-gray-400 dark:hover:text-white">
             <MenuIcon />
         </button>
-        <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">Dashboard Komando Terintegrasi</h1>
-          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Ringkasan status dan kinerja sistem medis TNI AU</p>
+        <div className="flex items-center gap-3">
+          <img
+            src="/logo.svg"
+            alt="Logo MedTrack AU"
+            className="hidden sm:block w-10 h-10 rounded-lg bg-blue-50 p-1 object-contain dark:bg-blue-900/30"
+          />
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">Dashboard Komando Terintegrasi</h1>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Ringkasan status dan kinerja sistem medis TNI AU</p>
+          </div>
         </div>
       </div>
       <div className="flex items-center space-x-3 sm:space-x-5">
