@@ -18,6 +18,7 @@ import {
     StockStatus,
 } from '../types';
 import { UsersIcon, BoxIcon, PulseIcon, TruckIcon } from './Icons';
+import { shouldCreateHospitalCriticalAlert, shouldCreateStockCriticalAlert } from '../utils/notificationLogic';
 
 const createNotification = (payload: Omit<NotificationData, 'id' | 'lifecycle'>): NotificationData => ({
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
@@ -149,7 +150,7 @@ const Dashboard: React.FC = () => {
 
             newData.forEach((hospital, index) => {
                 const oldHospital = prevData[index];
-                if (hospital.igdStatus === IGDStatus.Kritis && oldHospital.igdStatus !== IGDStatus.Kritis) {
+                if (shouldCreateHospitalCriticalAlert(oldHospital.igdStatus, hospital.igdStatus)) {
                     setPendingNotification(createNotification({
                         priority: NotificationPriority.Tinggi,
                         title: `Status Kritis: ${hospital.name}`,
@@ -205,7 +206,7 @@ const Dashboard: React.FC = () => {
 
             newData.forEach((item, index) => {
                 const oldItem = prevData[index];
-                if (item.status === StockStatus.Kritis && oldItem.status !== StockStatus.Kritis) {
+                if (shouldCreateStockCriticalAlert(oldItem.status, item.status)) {
                     setPendingNotification(createNotification({
                         priority: NotificationPriority.Sedang,
                         title: `Stok Kritis: ${item.name}`,
