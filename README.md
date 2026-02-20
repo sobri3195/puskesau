@@ -26,3 +26,11 @@ View your app in AI Studio: https://ai.studio/apps/2f9f198f-5131-4483-9853-af89c
 - `npm run test` (unit + integration)
 - `npm run test:e2e`
 - `npm run build`
+
+## Data Interoperability Layer
+
+Lapisan interoperabilitas data kesehatan tersedia di `utils/interoperability/index.ts` dengan cakupan:
+
+- Adapter untuk `Patient`, `Encounter`, `Observation`, dan `InventoryItem` (FHIR R5).
+- Validasi skema input internal + error handling terstruktur (`MappingValidationError`).
+- Dokumentasi kontrak endpoint di [`docs/interoperability-api.md`](docs/interoperability-api.md).
