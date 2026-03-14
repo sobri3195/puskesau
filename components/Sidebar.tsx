@@ -20,6 +20,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, activeView, setAct
     { name: 'Jadwal & Tugas', icon: <CalendarIcon /> },
     { name: 'Incident Management', icon: <HelpIcon /> },
     { name: 'Laporan & Analitik', icon: <ChartIcon /> },
+    { name: 'Modul Operasi 1', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 2', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 3', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 4', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 5', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 6', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 7', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 8', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 9', icon: <HelpIcon /> },
+    { name: 'Modul Operasi 10', icon: <HelpIcon /> },
   ];
 
   const handleMenuClick = (view: View) => {

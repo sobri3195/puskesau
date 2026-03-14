@@ -65,7 +65,17 @@ export type View =
   | 'Distribusi' 
   | 'Jadwal & Tugas' 
   | 'Incident Management'
-  | 'Laporan & Analitik';
+  | 'Laporan & Analitik'
+  | 'Modul Operasi 1'
+  | 'Modul Operasi 2'
+  | 'Modul Operasi 3'
+  | 'Modul Operasi 4'
+  | 'Modul Operasi 5'
+  | 'Modul Operasi 6'
+  | 'Modul Operasi 7'
+  | 'Modul Operasi 8'
+  | 'Modul Operasi 9'
+  | 'Modul Operasi 10';
 
 const createNotification = (payload: Omit<NotificationData, 'id' | 'lifecycle'>): NotificationData => ({
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
@@ -218,6 +228,15 @@ const AppContent: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { activeView, setActiveView } = useNavigation();
 
+  const renderModulePlaceholder = (moduleName: string) => (
+    <div className="p-6 text-gray-800 dark:text-gray-100">
+      <h1 className="text-2xl font-bold">{moduleName}</h1>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+        Konten {moduleName} sedang dipersiapkan dan siap dikembangkan lebih lanjut sesuai kebutuhan operasional.
+      </p>
+    </div>
+  );
+
   const renderView = () => {
     switch (activeView) {
       case 'Dashboard':
@@ -238,6 +257,17 @@ const AppContent: React.FC = () => {
         return <IncidentManagement />;
       case 'Laporan & Analitik':
         return <ReportsAndAnalytics />;
+      case 'Modul Operasi 1':
+      case 'Modul Operasi 2':
+      case 'Modul Operasi 3':
+      case 'Modul Operasi 4':
+      case 'Modul Operasi 5':
+      case 'Modul Operasi 6':
+      case 'Modul Operasi 7':
+      case 'Modul Operasi 8':
+      case 'Modul Operasi 9':
+      case 'Modul Operasi 10':
+        return renderModulePlaceholder(activeView);
       default:
         return <div className="p-6 text-gray-800 dark:text-gray-100">
           <h1 className="text-2xl font-bold">Welcome to {activeView}</h1>
